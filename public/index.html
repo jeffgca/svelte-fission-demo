@@ -11,6 +11,41 @@
 	<link rel='stylesheet' href='/build/bundle.css'>
 
 	<script defer src='/build/bundle.js'></script>
+  <script defer src="https://unpkg.com/webnative@0.26.0/dist/index.min.js"></script>
+  <script>
+    const wn = self.webnative;
+
+    const state = wn.initialise({
+  permissions: {
+    // Will ask the user permission to store
+    // your apps data in `private/Apps/Nullsoft/Winamp`
+    app: {
+      name: "Winamp",
+      creator: "Nullsoft"
+    },
+
+    // Ask the user permission to additional filesystem paths
+    fs: {
+      private: [ wn.path.directory("Audio", "Music") ],
+      public: [ wn.path.directory("Audio", "Mixtapes") ]
+    }
+  }
+}).catch(err => {
+  switch (err) {
+    case wn.InitialisationError.InsecureContext:
+    console.error('InsecureContext', err);
+    case wn.InitialisationError.UnsupportedBrowser:
+      // Browser not supported.
+      // Example: Firefox private mode can't use indexedDB.
+      console.error('UnsupportedBrowser', err);
+  }
+});
+
+state.then((result) => {
+  console.log('got here');
+});
+
+  </script>
 </head>
 
 <body>
